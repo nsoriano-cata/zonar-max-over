@@ -17,6 +17,9 @@ def process_data(df):
     # Format the date as requested (e.g., 9/1/2024)
     daily_sum['Date'] = daily_sum['Date'].dt.strftime('%m/%d/%Y')
     
+    # Round the 'Max Over(mph)' to 2 decimal places
+    daily_sum['Max Over(mph)'] = daily_sum['Max Over(mph)'].round(2)
+    
     return daily_sum
 
 def plot_data(data):
@@ -24,14 +27,22 @@ def plot_data(data):
                   title='Total Max Over(mph) by Date',
                   labels={'Max Over(mph)': 'Total Max Over (mph)'})
     
-    fig.update_traces(mode='lines+markers')
+    fig.update_traces(mode='lines+markers+text',
+                      text=data['Max Over(mph)'],
+                      textposition='top center',
+                      textfont=dict(size=10),
+                      hovertemplate='Date: %{x}<br>Total Max Over (mph): %{y:.2f}<extra></extra>')
+    
     fig.update_layout(hovermode='x unified')
     
-    # Customize hover template to show formatted date
-    fig.update_traces(hovertemplate='Date: %{x}<br>Total Max Over (mph): %{y:.2f}<extra></extra>')
-    
-    # Adjust x-axis to show all dates without overlapping
-    fig.update_xaxes(tickangle=45)
+    # Adjust layout to accommodate text labels
+    fig.update_layout(
+        showlegend=False,
+        xaxis=dict(tickangle=45),
+        yaxis=dict(rangemode='tozero'),  # Ensure y-axis starts from 0
+        margin=dict(t=50, b=50, l=50, r=50),  # Adjust margins
+        height=600  # Increase height of the plot
+    )
     
     return fig
 
