@@ -5,7 +5,9 @@ import plotly.express as px
 def load_data(file):
     # Read CSV file, skipping the first 4 rows as headers start from row 5
     df = pd.read_csv(file, skiprows=4)
-    print(df.columns)
+    print("Columns:", df.columns)
+    print("\nFirst few rows:")
+    print(df.head())
     return df
 
 def process_data(df):
@@ -54,13 +56,22 @@ def main():
 
     if uploaded_file is not None:
         data = load_data(uploaded_file)
-        processed_data = process_data(data)
         
-        st.subheader('Processed Data')
-        st.write(processed_data)
+        # Check if required columns are present
+        required_columns = ['Date', 'Max Over(mph)']
+        missing_columns = [col for col in required_columns if col not in data.columns]
         
-        fig = plot_data(processed_data)
-        st.plotly_chart(fig, use_container_width=True)
+        if missing_columns:
+            st.error(f"Error: The following required columns are missing: {', '.join(missing_columns)}")
+            st.write("Available columns:", ', '.join(data.columns))
+        else:
+            processed_data = process_data(data)
+            
+            st.subheader('Processed Data')
+            st.write(processed_data)
+            
+            fig = plot_data(processed_data)
+            st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
