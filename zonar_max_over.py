@@ -3,8 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 def load_data(file):
-    # Read CSV file, skipping the first 4 rows as headers start from row 5
-    df = pd.read_csv(file, skiprows=4)
+    df = pd.read_csv(file)
     print("Columns:", df.columns)
     print("\nFirst few rows:")
     print(df.head())
