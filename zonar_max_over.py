@@ -5,6 +5,7 @@ import plotly.express as px
 def load_data(file):
     # Read CSV file, skipping the first 4 rows as headers start from row 5
     df = pd.read_csv(file, skiprows=4)
+    print(df.columns)
     return df
 
 def process_data(df):
