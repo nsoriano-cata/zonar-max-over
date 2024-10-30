@@ -55,13 +55,14 @@ def create_plots(daily_sum, daily_violations):
     
     # Add second trace - Violation Counts
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x=daily_violations['Date'],
             y=daily_violations['Violations_Over_5mph'],
             text=daily_violations['Violations_Over_5mph'],
-            textposition='outside',
+            mode='lines+markers+text',
+            textposition='top center',
             name='Violations > 5mph',
-            hovertemplate='Date: %{x}<br>Violations: %{y}<extra></extra>'
+            hovertemplate='Date: %{x}<br>Violations: %{yL.2f}<extra></extra>'
         ),
         row=2, col=1
     )
